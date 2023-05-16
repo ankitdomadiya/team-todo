@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Lists, TaskDetails, TasksService } from '../api/tasks.service';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-g-keep',
@@ -6,34 +9,57 @@ import { Component } from '@angular/core';
   styleUrls: ['./g-keep.component.scss']
 })
 export class GKeepComponent {
-  dynamicArray: Array<DynamicGrid> = [];
-  newDynamic: any = {};
+
+  taskData: Array<TaskDetails> = new Array<TaskDetails>();
+  taskDetails!: TaskDetails;
+  toster: any;
+
+  constructor(private Api: TasksService, private toastr: ToastrService){}
+  
   ngOnInit(): void {
-    this.newDynamic = { completed: false, item: "" };
-    this.dynamicArray.push(this.newDynamic);
-  }
 
-  addRow() {
-    this.newDynamic = { completed: false, item: "" };
-    this.dynamicArray.push(this.newDynamic);
-    console.log('New row added successfully');
-    console.log(this.dynamicArray);
-    return true;
-  }
+    this.taskDetails = new TaskDetails;
+    this.taskDetails.ListItems = new Array<Lists>();
 
-  deleteRow(index: any) {
-    if (this.dynamicArray.length == 1) {
-      console.log('Cant delete the row when there is only one row');
-      return false;
-    } else {
-      this.dynamicArray.splice(index, 1);
-      console.log('Row deleted successfully');
-      return true;
+    this.addRow();
+    this.getMethods();
+  }
+  // Add Tasks 
+
+  addDetails(){
+    if(this.taskDetails.title){
+
+      this.Api.addTasks(this.taskDetails).subscribe({
+        next:(res)=>{console.log(res);
+          this.getMethods();
+          this.taskDetails = new TaskDetails;
+          this.addRow();
+        },
+        error:(err)=>{console.log(err)},
+        complete:()=>{this.toster.success('complete');},
+      })
     }
   }
 
+  // Get Tasks
+
+  getMethods(){
+    this.Api.getTasks().subscribe({
+      next:(res)=>{
+        this.taskData=res;
+      }
+    })
+  }
+
+
+  addRow() {
+    this.taskDetails.ListItems.push(new Lists);
+  }
+
+  deleteRow(index: any) {
+    if (this.taskDetails.ListItems.length == 1) {
+      this.taskDetails.ListItems.splice(index, 1);
+  }
+
 }
-export class DynamicGrid{     
-  completed:boolean = false;  
-  item?:string;
 }

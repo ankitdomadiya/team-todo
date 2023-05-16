@@ -24,19 +24,20 @@
           <div class="collapse taskbody " id="collapseExample">
                 <div class="card">
                   <ul class="list-group list-group-flush">
-                    <li class="list-group-item "><input type="text" class="form-control mb-1 itemTitle" id="floatingInput" placeholder="Title"></li>
+                    <li class="list-group-item "><input type="text" class="form-control mb-1 itemTitle" id="floatingInput" name="title" [(ngModel)]="taskDetails.title  " placeholder="Title"></li>
                     <li class="list-group-item overflow-auto"  style="height: 200px;">
-                      <ul *ngFor="let dynamic of dynamicArray; let i = index;" (keyup.enter)="addRow()" class=" list-group-flush ">
+                      <ul *ngFor="let tasks of taskDetails.ListItems; let i = index;" (keyup.enter)="addRow()" class=" list-group-flush ">
                         <li class="list-group-item d-flex">
                             <i class="bi bi-x-lg me-2" (click)="deleteRow(i)"></i>
-                            <input type="checkbox" [(ngModel)]="dynamicArray[i].completed" name="" id="">
-                            <input type="text" [(ngModel)]="dynamicArray[i].item" class=" addbutton w-75 ms-3" placeholder="List item">  
+                            <input type="checkbox" [(ngModel)]="tasks.checkbox" name="" id="">
+                            <input type="text" [(ngModel)]="tasks.items" class=" addbutton w-75 ms-3" placeholder="List item">  
                         </li>             
                       </ul>
                       <li class="list-group-item" (click)="addRow()"><i class="fa fa-plus"></i></li>
                     <li class="list-group-item"></li>
                   </ul>
                 </div>
+                <div class="btn btn-primary" (click)="addDetails()" data-bs-toggle="collapse" href="#collapseExample" aria-controls="collapseExample">submit</div>
           </div>
       </section>
       </div>
@@ -47,39 +48,37 @@
 
 <section class="container mt-5">
     <div class="row">
-        <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-5 overflow-auto">
-            <div class="card" style="max-width: 18rem; max-height: 25rem;">
-                <div class="card-header d-flex justify-content-between heding-shadow">
-                    <p>1</p>
-                    <div>
-                        <button class="btn btn-transparent text-success fa fa-paint-brush"></button>
-                        <button class="btn btn-transparent text-danger fa fa-trash"></button>
+
+        <ng-container *ngFor="let item of taskData">
+
+            <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-5 overflow-auto">
+                <div class="card" style="max-width: 18rem; max-height: 25rem;">
+                    <div class="card-header d-flex justify-content-between heding-shadow">
+                        <p>1</p>
+                        <div>
+                            <button class="btn btn-transparent text-success fa fa-paint-brush"></button>
+                            <button class="btn btn-transparent text-danger fa fa-trash"></button>
+                        </div>
+                    </div>
+                    <div class="card-body text-shadow">
+                        <h5 class="card-title">{{item.title}}</h5>
+                        <ol style="list-style-type: none">
+                            <ng-container *ngFor="let initems of item.ListItems">
+                                <li>
+                                    <input type="checkbox" name="" id="">
+                                    {{initems.items}}
+                                </li>
+
+                            </ng-container>
+                            
+                        </ol>
+                        <p>16/05/2023</p>
                     </div>
                 </div>
-                <div class="card-body text-shadow">
-                    <h5 class="card-title">Primary card title</h5>
-                    <ol style="list-style-type: none">
-                        <li>
-                            <input type="checkbox" name="" id="">
-                            ok
-                        </li>
-                        <hr>
-                       
-                        <li>
-                            <input type="checkbox" name="" id="">
-                            ok
-                        </li>
-                        <hr>
-                        <li>
-                            <input type="checkbox" name="" id="">
-                            ok
-                        </li>
-                        <hr>
-                    </ol>
-                    <p>16/05/2023</p>
-                </div>
             </div>
-        </div>
+        </ng-container>
+        
+
     </div>
 </section>
 
