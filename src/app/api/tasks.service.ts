@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,7 @@ export class TasksService {
   getTasks(){
     // return this.http.get<Array<TaskDetails>>(this.__taskUrl, {headers: this.httpHeaders});
     return this.http.get<Array<TaskDetails>>(this.__taskUrl);
+    
   }
 
   // put api
@@ -41,9 +43,9 @@ export class TasksService {
 }
 
 export class TaskDetails{
-  id?: number;
+  id?: number ;
   title?: string;
-  ListItems?:Array<Lists> = new Array<Lists>()
+  ListItems?:Array<Lists> = new Array<Lists>();
 }
 
 export class Lists{
