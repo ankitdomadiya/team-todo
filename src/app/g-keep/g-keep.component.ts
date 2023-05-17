@@ -11,9 +11,14 @@ export class GKeepComponent {
 
   taskData: Array<TaskDetails> = new Array<TaskDetails>();
   // FilterEmployeeDetails: Array<TaskDetails> = new Array<TaskDetails>();
-  taskDetails!: TaskDetails;
+  taskDetails?: TaskDetails;
   taskChangeBtn: boolean = false;
   searchValue: string;
+  isDuplicate:boolean = false;
+  updateTask: boolean = false;
+  updateAddBtn: boolean;
+  fillBtn: boolean;
+  getlistArray: any;
 
   constructor(private Api: TasksService, private toastr: ToastrService) { }
 
@@ -25,99 +30,131 @@ export class GKeepComponent {
     this.getMethods();
   }
 
+  // duplicate removel 
+
+  duplicateRemove() {
+    if(this.taskData.length > 0){
+      for (let item of this.taskData) {
+        if(item.title == this.taskDetails.title){
+          this.isDuplicate = false;
+        }
+        else{
+          this.isDuplicate = true;
+        }
+      }
+    }
+    else{
+      this.isDuplicate = true;
+    }
+  }
+
   // Add Tasks 
 
   addDetails() {
-    if (this.taskDetails.title) {
-      this.Api.addTasks(this.taskDetails).subscribe({
-        next: (res) => {
-          console.log(res);
-          this.getMethods();
-          this.taskDetails = new TaskDetails;
-          this.addRow();
-        },
-        error: (err) => { console.log(err) },
-        complete: () => { this.toastr.success('Task Add Successfull'); },
-      })
-    }
-  }
-
-  // Get Tasks
-
-  getMethods() {
-    this.Api.getTasks().subscribe({
-      next: (res) => {
-        this.taskData = res;
+    this.duplicateRemove();
+    if (this.isDuplicate) {
+      if (this.taskDetails.title) {
+        this.Api.addTasks(this.taskDetails).subscribe({
+          next: (res) => {
+            console.log(res);
+            this.getMethods();
+            this.taskDetails = new TaskDetails;
+            this.addRow();
+          },
+          error: (err) => { console.log(err) },
+          complete: () => { this.toastr.success('Task Add Successfull'); },
+        })
       }
-    })
-  }
-
-  // Fetch Task
-
-  fetchTask(item) {
-    this.taskDetails = item;
-
-    // for add and change button name
-    this.taskChangeBtn = true;
-  }
-
-  // Update Tasks
-
-  updateMethod() {
-    this.Api.updateTask(this.taskDetails).subscribe({
-      next: (res) => {
-        this.getMethods();
-        this.taskChangeBtn = false;
-      },
-      error: (err) => { console.log('found error') },
-      complete: () => { this.toastr.success('Task Update Successfull'); }
-    })
-  }
-
-  // Delete Tasks
-
-  deleteTask(item: any) {
-    this.Api.deleteTask(item).subscribe({
-      next: (res) => {
-        this.getMethods();
-       },
-      error: (err) => { this.toastr.success('Found Problem To Delete Time'); },
-      complete: () => { this.toastr.success('Task Delete Successfull'); }
-    })
-  }
-
-  // Add Row
-
-  addRow() {
-    this.taskDetails.ListItems.push(new Lists);
-  }
-
-  // Delete Row
-
-  deleteRow(index: any) {
-    if (this.taskDetails.ListItems.length != 1) {
-      this.taskDetails.ListItems.splice(index, 1);
-    }
-
-  }
-
-  // Search Method
-
-  search() {
-    if (this.searchValue) {
-      let searchEmployee = new Array<TaskDetails>();
-      if (this.taskData.length > 0) {
-        for (let emp of this.taskData) {
-          if (JSON.stringify(emp).toLowerCase().indexOf(this.searchValue.toLowerCase()) > 0) {
-            searchEmployee.push(emp);
-          }
-        }
-        this.taskData = searchEmployee;
+      else {
+        alert("Title Is Required");
       }
     }
     else {
-      // this.taskData = this.taskData;
-      this.getMethods();
+      this.toastr.warning("Can't Add Duplicate Value")
     }
+    }
+
+    // Get Tasks
+
+    getMethods() {
+      this.Api.getTasks().subscribe({
+        next: (res) => {
+          this.taskData = res;
+        }
+      })
+    }
+
+    // Fetch Task
+
+    fetchTask(item) {
+      this.taskDetails = item;
+
+      // for add and change button name
+      this.taskChangeBtn = true;
+    }
+
+    // Update Tasks
+
+    updateMethod() {
+      this.Api.updateTask(this.taskDetails).subscribe({
+        next: (res) => {
+          this.getMethods();
+          this.taskChangeBtn = false;
+        },
+        error: (err) => { console.log('found error') },
+        complete: () => { this.toastr.success('Task Update Successfull'); }
+      })
+    }
+
+    // Delete Tasks
+
+    deleteTask(item: any) {
+      this.Api.deleteTask(item).subscribe({
+        next: (res) => {
+          this.getMethods();
+        },
+        error: (err) => { this.toastr.success('Found Problem To Delete Time'); },
+        complete: () => { this.toastr.success('Task Delete Successfull'); }
+      })
+    }
+
+    // close method
+
+    close(){
+      this.updateTask = false;
+      this.taskDetails = new TaskDetails();
+    }
+
+    // Add Row
+
+    addRow() {
+      this.taskDetails.ListItems.push(new Lists);
+    }
+
+    // Delete Row
+
+    deleteRow(index: any) {
+      if (this.taskDetails.ListItems.length != 1) {
+        this.taskDetails.ListItems.splice(index, 1);
+      }
+    }
+    
+    // search method
+
+    search() {
+      if (this.searchValue) {
+        let searchEmployee = new Array<TaskDetails>();
+        if (this.taskData.length > 0) {
+          for (let emp of this.taskData) {
+            if (JSON.stringify(emp).toLowerCase().indexOf(this.searchValue.toLowerCase()) > 0) {
+              searchEmployee.push(emp);
+            }
+          }
+          this.taskData = searchEmployee;
+        }
+      }
+      else {
+        this.getMethods();
+      }
+    }  
   }
-}

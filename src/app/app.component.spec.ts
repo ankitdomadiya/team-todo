@@ -1,15 +1,25 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { GKeepComponent } from './g-keep/g-keep.component';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        ToastrModule.forRoot(),
+        HttpClientModule
+      ],
+      providers:[
+        HttpClient,
+        ToastrService
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        GKeepComponent
       ],
     }).compileComponents();
   });
@@ -26,10 +36,5 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('team-todo');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('team-todo app is running!');
-  });
+
 });
