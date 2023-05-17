@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <img src="assets/logo.png" alt="logo" class="navbar-logo">
         <form>
-            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+            <input class="form-control" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="searchValue" name="search" (keyup)="search()" autocomplete="off">
         </form>
     </div>
 </nav>
@@ -24,11 +24,14 @@
           <div class="collapse taskbody " id="collapseExample">
                 <div class="card">
                   <ul class="list-group list-group-flush">
-                    <li class="list-group-item "><input type="text" class="form-control mb-1 itemTitle" id="floatingInput" name="title" [(ngModel)]="taskDetails.title  " placeholder="Title"></li>
-                    <li class="list-group-item overflow-auto"  style="height: 200px;">
+                    <li class="list-group-item ">
+                        <input type="text" class="form-control mb-1 itemTitle" id="floatingInput" name="title" [(ngModel)]="taskDetails.title  " placeholder="Title">
+                    </li>
+                    <li class="list-group-item overflow-auto" style="height: 200px;">
                       <ul *ngFor="let tasks of taskDetails.ListItems; let i = index;" (keyup.enter)="addRow()" class=" list-group-flush ">
                         <li class="list-group-item d-flex">
-                            <i class="bi bi-x-lg me-2" (click)="deleteRow(i)"></i>
+                            <i class="fa fa-trash me-2" (click)="deleteRow(i)">
+                            </i>
                             <input type="checkbox" [(ngModel)]="tasks.checkbox" name="" id="">
                             <input type="text" [(ngModel)]="tasks.items" class=" addbutton w-75 ms-3" placeholder="List item">  
                         </li>             
@@ -37,7 +40,8 @@
                     <li class="list-group-item"></li>
                   </ul>
                 </div>
-                <div class="btn btn-primary" (click)="addDetails()" data-bs-toggle="collapse" href="#collapseExample" aria-controls="collapseExample">submit</div>
+                <div class="btn btn-primary" (click)="addDetails()" *ngIf="!taskChangeBtn" data-bs-toggle="collapse" href="#collapseExample" aria-controls="collapseExample">submit</div>
+                <div class="btn btn-primary" (click)="updateMethod()" *ngIf="taskChangeBtn" data-bs-toggle="collapse" href="#collapseExample" aria-controls="collapseExample">Edit</div>
           </div>
       </section>
       </div>
@@ -52,12 +56,14 @@
         <ng-container *ngFor="let item of taskData let i = index;">
 
             <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-5 overflow-auto">
-                <div class="card" style="max-width: 18rem; max-height: 25rem;">
+                <div class="card" style="max-width: 18rem; max-height: 15rem;">
                     <div class="card-header d-flex justify-content-between heding-shadow">
-                        <p>{{i}}</p>
+                        <!-- <p>{{i+1}}</p> -->
+                        <!-- <p>{{i}}</p> -->
+                        <p>{{item.id}}</p>
                         <div>
-                            <button class="btn btn-transparent text-success fa fa-paint-brush"></button>
-                            <button class="btn btn-transparent text-danger fa fa-trash"></button>
+                            <button class="btn btn-transparent text-success fa fa-paint-brush" data-bs-toggle="collapse" href="#collapseExample" (click)="fetchTask(item)"></button>
+                            <button class="btn btn-transparent text-danger fa fa-trash" (click)="deleteTask(item.id)" ></button>
                         </div>
                     </div>
                     <div class="card-body text-shadow">
@@ -65,20 +71,23 @@
                         <ol style="list-style-type: none">
                             <ng-container *ngFor="let initems of item.ListItems">
                                 <li>
-                                    <input type="checkbox" name="" id="">
-                                    {{initems.items}}
+                                    <input type="checkbox" name="" id="" disabled [checked]="initems.checkbox">
+                                    <label *ngIf="!initems.checkbox">
+                                        {{initems.items}}  
+                                    </label>
+                                    <label *ngIf="initems.checkbox">
+                                        <del>
+                                            {{initems.items}}
+                                        </del>
+                                    </label>
                                 </li>
-
                             </ng-container>
-                            
                         </ol>
                         <p>16/05/2023</p>
                     </div>
                 </div>
             </div>
         </ng-container>
-        
-
     </div>
 </section>
 
