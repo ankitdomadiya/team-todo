@@ -80,6 +80,7 @@ export class GKeepComponent {
       this.Api.getTasks().subscribe({
         next: (res) => {
           this.taskData = res;
+          
         }
       })
     }
@@ -123,6 +124,7 @@ export class GKeepComponent {
     close(){
       this.updateTask = false;
       this.taskDetails = new TaskDetails();
+      this.addRow();
     }
 
     // Add Row

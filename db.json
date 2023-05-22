@@ -4,28 +4,32 @@
       "ListItems": [
         {
           "checkbox": false,
-          "items": "asdf"
+          "items": "Today's Task"
         }
       ],
-      "title": "sdfg",
+      "title": "A.c Cleaning",
       "id": 1
     },
     {
       "ListItems": [
         {
+          "checkbox": false,
+          "items": "sdf"
+        },
+        {
           "checkbox": true,
           "items": "asdf"
+        },
+        {
+          "checkbox": true,
+          "items": "sadf"
         },
         {
           "checkbox": false,
-          "items": "asdf"
-        },
-        {
-          "checkbox": true,
-          "items": "dfsadf"
+          "items": "sadf"
         }
       ],
-      "title": "dsaf",
+      "title": "sadf",
       "id": 2
     }
   ]
