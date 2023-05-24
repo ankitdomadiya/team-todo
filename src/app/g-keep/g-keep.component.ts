@@ -10,22 +10,28 @@ import { ToastrService } from 'ngx-toastr';
 export class GKeepComponent {
 
   taskData: Array<TaskDetails> = new Array<TaskDetails>();
+
+  // items data
+  itemsData: Array<TaskDetails> = new Array<TaskDetails>();
   // FilterEmployeeDetails: Array<TaskDetails> = new Array<TaskDetails>();
   taskDetails?: TaskDetails;
+  itemDetails?: Lists;
   taskChangeBtn: boolean = false;
   searchValue: string;
-  isDuplicate:boolean = false;
+  isDuplicate: boolean = false;
   updateTask: boolean = false;
   updateAddBtn: boolean;
   fillBtn: boolean;
   getlistArray: any;
+  d: any;
+tasks: any;
 
   constructor(private Api: TasksService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
 
     this.taskDetails = new TaskDetails;
-    this.taskDetails.ListItems = new Array<Lists>();
+    this.taskDetails.tasks = new Array<Lists>();
     this.addRow();
     this.getMethods();
   }
@@ -33,17 +39,17 @@ export class GKeepComponent {
   // duplicate removel 
 
   duplicateRemove() {
-    if(this.taskData.length > 0){
+    if (this.taskData.length > 0) {
       for (let item of this.taskData) {
-        if(item.title == this.taskDetails.title){
+        if (item.name == this.taskDetails.name) {
           this.isDuplicate = false;
         }
-        else{
+        else {
           this.isDuplicate = true;
         }
       }
     }
-    else{
+    else {
       this.isDuplicate = true;
     }
   }
@@ -53,7 +59,7 @@ export class GKeepComponent {
   addDetails() {
     this.duplicateRemove();
     if (this.isDuplicate) {
-      if (this.taskDetails.title) {
+      if (this.taskDetails.name) {
         this.Api.addTasks(this.taskDetails).subscribe({
           next: (res) => {
             console.log(res);
@@ -66,97 +72,145 @@ export class GKeepComponent {
         })
       }
       else {
-        alert("Title Is Required");
+        alert("Name Is Required");
       }
     }
     else {
       this.toastr.warning("Can't Add Duplicate Value")
     }
-    }
-
-    // Get Tasks
-
-    getMethods() {
-      this.Api.getTasks().subscribe({
-        next: (res) => {
-          this.taskData = res;
-          
-        }
-      })
-    }
-
-    // Fetch Task
-
-    fetchTask(item) {
-      this.taskDetails = item;
-
-      // for add and change button name
-      this.taskChangeBtn = true;
-    }
-
-    // Update Tasks
-
-    updateMethod() {
-      this.Api.updateTask(this.taskDetails).subscribe({
-        next: (res) => {
-          this.getMethods();
-          this.taskChangeBtn = false;
-        },
-        error: (err) => { console.log('found error') },
-        complete: () => { this.toastr.success('Task Update Successfull'); }
-      })
-    }
-
-    // Delete Tasks
-
-    deleteTask(item: any) {
-      this.Api.deleteTask(item).subscribe({
-        next: (res) => {
-          this.getMethods();
-        },
-        error: (err) => { this.toastr.success('Found Problem To Delete Time'); },
-        complete: () => { this.toastr.success('Task Delete Successfull'); }
-      })
-    }
-
-    // close method
-
-    close(){
-      this.updateTask = false;
-      this.taskDetails = new TaskDetails();
-      this.addRow();
-    }
-
-    // Add Row
-
-    addRow() {
-      this.taskDetails.ListItems.push(new Lists);
-    }
-
-    // Delete Row
-
-    deleteRow(index: any) {
-      if (this.taskDetails.ListItems.length != 1) {
-        this.taskDetails.ListItems.splice(index, 1);
-      }
-    }
-    
-    // search method
-
-    search() {
-      if (this.searchValue) {
-        let searchEmployee = new Array<TaskDetails>();
-        if (this.taskData.length > 0) {
-          for (let emp of this.taskData) {
-            if (JSON.stringify(emp).toLowerCase().indexOf(this.searchValue.toLowerCase()) > 0) {
-              searchEmployee.push(emp);
-            }
-          }
-          this.taskData = searchEmployee;
-        }
-      }
-      else {
-        this.getMethods();
-      }
-    }  
   }
+
+  // Get Tasks
+
+  getMethods() {
+    this.Api.getTasks().subscribe({
+      next: (res) => {
+        this.taskData = res;
+
+      }
+    })
+  }
+
+  // get items
+
+  getItems() {
+    this.Api.getTasks().subscribe({
+      next: (res) => {
+        this.itemsData = res;
+
+      }
+    })
+  }
+
+  // Fetch Task
+
+  fetchTask(item) {
+    this.taskDetails = item;
+
+    // for add and change button name
+    // this.taskChangeBtn = true;
+  }
+
+  // Fetch items
+
+  fetchItem(tasks: any) {
+    this.taskDetails = tasks;
+
+    // for add and change button name
+    this.taskChangeBtn = true;
+  }
+
+  // Update Tasks
+
+  updateMethod() {
+    this.Api.updateTask(this.taskDetails).subscribe({
+      next: (res) => {
+        this.updateItemMethod();
+        this.getMethods();
+        this.taskChangeBtn = false;
+      },
+      error: (err) => { console.log('found error') },
+      complete: () => { this.toastr.success('Task Update Successfull'); }
+    })
+  }
+
+  // update Items
+
+  updateItemMethod() {
+    this.taskDetails.tasks.forEach(element => {
+    this.Api.updateItems(element).subscribe({
+      next: (res) => {
+        this.getItems();
+        this.taskChangeBtn = false;
+      },
+      error: (err) => { console.log('found error') },
+      complete: () => { this.toastr.success('Task Update Successfull'); }
+    });
+  });
+  }
+  
+  // Delete Tasks
+
+  deleteTask(item: any) {
+    this.Api.deleteTask(item).subscribe({
+      next: (res) => {
+        this.getMethods();
+      },
+      error: (err) => { this.toastr.success('Found Problem To Delete Time'); },
+      complete: () => { this.toastr.success('Task Delete Successfull'); }
+    })
+  }
+
+  // delete items
+
+  deleteItems(task: any) {
+    this.Api.deleteItems(task).subscribe({
+      next: (res) => {
+        this.getItems();
+      },
+      error: (err) => { this.toastr.success('Found Problem To Delete Time'); },
+      complete: () => { this.toastr.success('Task Delete Successfull'); }
+    })
+  }
+
+  // close method
+
+  close() {
+    this.updateTask = false;
+    this.taskDetails = new TaskDetails();
+    this.addRow();
+  }
+
+  // Add Row
+
+  addRow() {
+    this.taskDetails.tasks.push(new Lists);
+  }
+
+  // Delete Row
+
+  deleteRow(index: any) {
+    if (this.taskDetails.tasks.length != 1) {
+      this.taskDetails.tasks.splice(index, 1);
+    }
+  }
+
+  // search method
+
+  search() {
+    if (this.searchValue) {
+      let searchEmployee = new Array<TaskDetails>();
+      if (this.taskData.length > 0) {
+        for (let emp of this.taskData) {
+          if (JSON.stringify(emp).toLowerCase().indexOf(this.searchValue.toLowerCase()) > 0) {
+            searchEmployee.push(emp);
+          }
+        }
+        this.taskData = searchEmployee;
+      }
+    }
+    else {
+      this.getMethods();
+    }
+  }
+}

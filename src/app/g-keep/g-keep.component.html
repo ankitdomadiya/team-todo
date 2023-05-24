@@ -27,16 +27,16 @@
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item ">
                                 <input type="text" class="form-control mb-1 itemTitle" id="floatingInput" name="title"
-                                    [(ngModel)]="taskDetails.title  " placeholder="Title">
+                                    [(ngModel)]="taskDetails.name  " placeholder="Title">
                             </li>
                             <li class="list-group-item overflow-auto" style="height: 200px;">
-                                <ul *ngFor="let tasks of taskDetails.ListItems; let i = index;" (keyup.enter)="addRow()"
+                                <ul *ngFor="let tasks of taskDetails.tasks; let i = index;" (keyup.enter)="addRow()"
                                     class=" list-group-flush ">
                                     <li class="list-group-item d-flex">
                                         <i class="fa fa-trash me-2" (click)="deleteRow(i)">
                                         </i>
-                                        <input type="checkbox" [(ngModel)]="tasks.checkbox" name="" id="">
-                                        <input type="text" [(ngModel)]="tasks.items" class=" addbutton w-75 ms-3"
+                                        <input type="checkbox" [(ngModel)]="tasks.iscompleted" name="" id="">
+                                        <input type="text" [(ngModel)]="tasks.name" class=" addbutton w-75 ms-3"
                                             placeholder="List item">
                                     </li>
                                 </ul>
@@ -49,6 +49,8 @@
                         aria-controls="collapseExample">submit</div>
                     <div class="btn btn-primary" (click)="updateMethod()" *ngIf="taskChangeBtn"
                         data-bs-toggle="collapse" href="#collapseExample" aria-controls="collapseExample">Edit</div>
+                    <!-- <div class="btn btn-primary" (click)="updateItemMethod()" *ngIf="taskChangeBtn"
+                        data-bs-toggle="collapse" href="#collapseExample" aria-controls="collapseExample">New Edit</div> -->
                 </div>
             </section>
         </div>
@@ -74,23 +76,25 @@
                         </div>
                     </div>
                     <div class="card-body text-shadow">
-                        <h5 class="card-title">{{item.title}}</h5>
+                        <h5 class="card-title">{{item.name}}</h5>
                         <ol style="list-style-type: none">
-                            <ng-container *ngFor="let initems of item.ListItems">
+                            <ng-container *ngFor="let initems of item.tasks">
                                 <li>
-                                    <input type="button" class="fs-5 text-success me-2 size" value="x">
-                                    <input type="checkbox" class="me-2" name="" id="" disabled [checked]="initems.checkbox">
-                                    <label *ngIf="!initems.checkbox">
-                                        {{initems.items}}
+                                    <input type="button" class="fs-5 text-success me-2 size" (click)="deleteItems(initems.id)" value="x">
+                                    <input type="checkbox" class="me-2" name="" id="" disabled
+                                        [checked]="initems.iscompleted">
+                                    <label *ngIf="!initems.iscompleted">
+                                        {{initems.name}}
                                     </label>
-                                    <label *ngIf="initems.checkbox">
+                                    <label *ngIf="initems.iscompleted">
                                         <del>
-                                            {{initems.items}}
+                                            {{initems.name}}
                                         </del>
                                     </label>
                                 </li>
                             </ng-container>
                         </ol>
+                        <p><button class="btn btn-transparent text-success fa fa-paint-brush" data-bs-toggle="collapse" href="#collapseExample" type="submit" (click)="fetchItem(item)"></button></p>
                         <p style="display: flex;">16/05/2023</p>
                     </div>
                 </div>
@@ -98,3 +102,4 @@
         </ng-container>
     </div>
 </section>
+
