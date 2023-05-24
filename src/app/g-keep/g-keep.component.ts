@@ -20,11 +20,11 @@ export class GKeepComponent {
   searchValue: string;
   isDuplicate: boolean = false;
   updateTask: boolean = false;
-  updateAddBtn: boolean;
+  updateAddBtn: boolean = false;
   fillBtn: boolean;
   getlistArray: any;
-  d: any;
-tasks: any;
+
+  tasks: any;
 
   constructor(private Api: TasksService, private toastr: ToastrService) { }
 
@@ -108,7 +108,7 @@ tasks: any;
     this.taskDetails = item;
 
     // for add and change button name
-    // this.taskChangeBtn = true;
+    this.taskChangeBtn = true;
   }
 
   // Fetch items
@@ -138,17 +138,17 @@ tasks: any;
 
   updateItemMethod() {
     this.taskDetails.tasks.forEach(element => {
-    this.Api.updateItems(element).subscribe({
-      next: (res) => {
-        this.getItems();
-        this.taskChangeBtn = false;
-      },
-      error: (err) => { console.log('found error') },
-      complete: () => { this.toastr.success('Task Update Successfull'); }
+      this.Api.updateItems(element).subscribe({
+        next: (res) => {
+          this.getItems();
+          this.taskChangeBtn = false;
+        },
+        error: (err) => { console.log('found error') },
+        complete: () => { this.toastr.success('Task Update Successfull'); }
+      });
     });
-  });
   }
-  
+
   // Delete Tasks
 
   deleteTask(item: any) {
@@ -176,6 +176,7 @@ tasks: any;
   // close method
 
   close() {
+    this.taskChangeBtn = false;
     this.updateTask = false;
     this.taskDetails = new TaskDetails();
     this.addRow();

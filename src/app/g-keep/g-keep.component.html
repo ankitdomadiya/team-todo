@@ -80,7 +80,8 @@
                         <ol style="list-style-type: none">
                             <ng-container *ngFor="let initems of item.tasks">
                                 <li>
-                                    <input type="button" class="fs-5 text-success me-2 size" (click)="deleteItems(initems.id)" value="x">
+                                    <button class="btn btn-transparent text-primary fa fa-paint-brush" data-bs-toggle="collapse" href="#collapseExample" type="submit" (click)="fetchItem(item)"></button>
+                                    <input type="button" class="fs-5 text-danger me-2 size" (click)="deleteItems(initems.id)" value="x">
                                     <input type="checkbox" class="me-2" name="" id="" disabled
                                         [checked]="initems.iscompleted">
                                     <label *ngIf="!initems.iscompleted">
@@ -94,8 +95,7 @@
                                 </li>
                             </ng-container>
                         </ol>
-                        <p><button class="btn btn-transparent text-success fa fa-paint-brush" data-bs-toggle="collapse" href="#collapseExample" type="submit" (click)="fetchItem(item)"></button></p>
-                        <p style="display: flex;">16/05/2023</p>
+                        <p style="display: flex;">{{ item.addedon | date }}</p>
                     </div>
                 </div>
             </div>

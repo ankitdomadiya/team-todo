@@ -10,7 +10,7 @@ export class TasksService {
 
   constructor(private http: HttpClient) { }
 
-  __taskUrl = 'http://10.10.5.107:16100/Todo';
+  __taskUrl = 'http://10.10.5.127:16100/Todo';
 
   // post api
   // use for add tasks
@@ -38,7 +38,7 @@ export class TasksService {
   // updateitems
 
   updateItems(body: any) {
-    return this.http.put(`http://10.10.5.107:16100/Todo/task/${body.id}`, body);
+    return this.http.put(`http://10.10.5.127:16100/Todo/task/${body.id}`, body);
   }
 
   // update task items
@@ -56,7 +56,7 @@ export class TasksService {
   // delete items
 
   deleteItems(id: any) {
-    return this.http.delete(`http://10.10.5.107:16100/Todo/task/${id}`);
+    return this.http.delete(`http://10.10.5.127:16100/Todo/task/${id}`);
   }
 }
 
@@ -73,7 +73,7 @@ export class TasksService {
 export class TaskDetails {
   id?: number;
   name?: string;
-  addedon:Date|any = new Date();
+  addedon:any = new Date();
   tasks?: Array<Lists> = new Array<Lists>();
 }
 
