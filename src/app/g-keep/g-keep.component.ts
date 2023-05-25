@@ -16,6 +16,7 @@ export class GKeepComponent {
   // FilterEmployeeDetails: Array<TaskDetails> = new Array<TaskDetails>();
   taskDetails?: TaskDetails;
   itemDetails?: Lists;
+  singleItems?: Lists;
   taskChangeBtn: boolean = false;
   searchValue: string;
   isDuplicate: boolean = false;
@@ -23,17 +24,31 @@ export class GKeepComponent {
   updateAddBtn: boolean = false;
   fillBtn: boolean;
   getlistArray: any;
-
   tasks: any;
+
+  // button hinde 
+
+  showInputField: boolean = false;
+
 
   constructor(private Api: TasksService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
 
     this.taskDetails = new TaskDetails;
+    this.singleItems = new Lists;
     this.taskDetails.tasks = new Array<Lists>();
     this.addRow();
     this.getMethods();
+  }
+
+  // button add and hide method 
+
+  toggleInputField(item) {
+    if(!this.showInputField){
+      item.isInput = true;
+    }
+    // this.showInputField = !this.showInputField;
   }
 
   // duplicate removel 
@@ -80,6 +95,26 @@ export class GKeepComponent {
     }
   }
 
+  addItems(TodoId) {
+
+    this.singleItems.todoId = TodoId;
+
+    let oneData = this.singleItems;
+    console.log(oneData);
+
+    this.Api.addItems(TodoId,oneData).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.getMethods();
+        this.taskDetails = new TaskDetails;
+      },
+      error: (err) => { console.log(err) },
+      complete: () => { this.toastr.success('Task Add Successfull'); },
+    })
+  }
+
+
+
   // Get Tasks
 
   getMethods() {
@@ -104,7 +139,7 @@ export class GKeepComponent {
 
   // Fetch Task
 
-  fetchTask(item) {
+  fetchTask(item: any) {
     this.taskDetails = item;
 
     // for add and change button name
@@ -138,7 +173,7 @@ export class GKeepComponent {
 
   updateItemMethod() {
     this.taskDetails.tasks.forEach(element => {
-      this.Api.updateItems(element).subscribe({
+      this.Api.updateItems(this.taskDetails.id, element).subscribe({
         next: (res) => {
           this.getItems();
           this.taskChangeBtn = false;
@@ -156,15 +191,15 @@ export class GKeepComponent {
       next: (res) => {
         this.getMethods();
       },
-      error: (err) => { this.toastr.success('Found Problem To Delete Time'); },
+      error: (err) => { this.toastr.success('Data Deleted'); },
       complete: () => { this.toastr.success('Task Delete Successfull'); }
     })
   }
 
   // delete items
 
-  deleteItems(task: any) {
-    this.Api.deleteItems(task).subscribe({
+  deleteItems(TodoId, task: any) {
+    this.Api.deleteItems(TodoId, task).subscribe({
       next: (res) => {
         this.getItems();
       },

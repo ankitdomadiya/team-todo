@@ -10,7 +10,7 @@ export class TasksService {
 
   constructor(private http: HttpClient) { }
 
-  __taskUrl = 'http://10.10.5.127:16100/Todo';
+  __taskUrl = 'http://10.10.5.107:16100/Todo';
 
   // post api
   // use for add tasks
@@ -18,14 +18,15 @@ export class TasksService {
   addTasks(body: TaskDetails) {
     return this.http.post(this.__taskUrl, body);
   }
+  addItems(TodoId,body: Lists) {
+    return this.http.post(`http://10.10.5.107:16100/Todo/${TodoId}/task`, body);
+  }
 
   // get api
   // use for get tasks
 
   getTasks() {
-    // return this.http.get<Array<TaskDetails>>(this.__taskUrl, {headers: this.httpHeaders});
     return this.http.get<Array<TaskDetails>>(this.__taskUrl);
-
   }
 
   // put api
@@ -37,15 +38,9 @@ export class TasksService {
 
   // updateitems
 
-  updateItems(body: any) {
-    return this.http.put(`http://10.10.5.127:16100/Todo/task/${body.id}`, body);
+  updateItems(TodoId,body: any) {
+    return this.http.put(`http://10.10.5.107:16100/Todo/${TodoId}/task/${body.id}`, body);
   }
-
-  // update task items
-
-  // updateItem(body: any) {
-  //   return this.http.put(`${"http://10.10.5.107:16100/Todo/task"}/${body.id}`, body);
-  // }
 
   // use for delete tasks
 
@@ -55,26 +50,18 @@ export class TasksService {
 
   // delete items
 
-  deleteItems(id: any) {
-    return this.http.delete(`http://10.10.5.127:16100/Todo/task/${id}`);
+  deleteItems(TodoId,id: any) {
+    return this.http.delete (`http://10.10.5.107:16100/todo/${TodoId}/task/${id}`);
   }
 }
-
-// export class TaskDetails{
-//   id?: number ;
-//   title?: string;
-//   ListItems?:Array<Lists> = new Array<Lists>();
-// }
-
-// export class Lists{
-//   items?: string;
-//   checkbox: boolean = false;
-// }
 export class TaskDetails {
   id?: number;
   name?: string;
   addedon:any = new Date();
   tasks?: Array<Lists> = new Array<Lists>();
+
+  // UI
+  isInput:boolean = false;
 }
 
 export class Lists {
