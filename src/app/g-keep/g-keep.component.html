@@ -32,9 +32,9 @@
                             <li class="list-group-item overflow-auto" style="height: 200px;">
                                 <ul *ngFor="let tasks of taskDetails.tasks; let i = index;" (keyup.enter)="addRow()"
                                     class=" list-group-flush ">
-                                    <li class="list-group-item d-flex">
+                                    <li class="list-group-item ">
                                         <i class="fa fa-trash me-2" (click)="deleteRow(i)"></i>
-                                        <input type="checkbox" [(ngModel)]="tasks.iscompleted" name="" id="">
+                                        <input type="checkbox" [(ngModel)]="tasks.isCompleted" name="" id="">
                                         <input type="text" [(ngModel)]="tasks.name" class="addbutton w-75 ms-3"
                                             placeholder="List item">
                                     </li>
@@ -83,7 +83,7 @@
                         <i class="fa fa-plus" (click)="buttonAnimation(item)"></i>
                         <span class="ms-3 " *ngIf="item.isInput">
                             <input  type="checkbox" name="checkbox"
-                                [(ngModel)]="singleItems.iscompleted">
+                                [(ngModel)]="singleItems.isCompleted">
                             <input  [(ngModel)]="singleItems.name" class="addbutton w-75 ms-2 mb-1"
                                 (keyup.enter)="addItems(item.id)" type="text">
                         </span>
@@ -92,17 +92,17 @@
                         <ol style="list-style-type: none">
                             <ng-container *ngFor="let initems of item.tasks">
                                 <li>
-                                    <button class="btn btn-transparent text-primary fa fa-paint-brush"
+                                    <i class="text-primary fa fa-paint-brush"
                                         data-bs-toggle="collapse" href="#collapseExample" type="submit"
-                                        (click)="fetchItem(item)"></button>
+                                        (click)="fetchItem(item)"></i>
                                     <input type="button" class="fs-5 text-danger me-2 size"
                                         (click)="deleteItems(item.id,initems.id)" value="x">
                                     <input type="checkbox" class="me-2" name="" id="" disabled
-                                        [checked]="initems.iscompleted">
-                                    <label *ngIf="!initems.iscompleted">
+                                        [checked]="initems.isCompleted">
+                                    <label *ngIf="!initems.isCompleted">
                                         {{initems.name}}
                                     </label>
-                                    <label *ngIf="initems.iscompleted">
+                                    <label *ngIf="initems.isCompleted">
                                         <del>
                                             {{initems.name}}
                                         </del>

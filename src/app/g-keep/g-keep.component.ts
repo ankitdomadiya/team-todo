@@ -124,6 +124,7 @@ export class GKeepComponent {
       next: (res) => {
         console.log(res);
         this.getMethods();
+        this.singleItems = new Lists;
         this.taskDetails = new TaskDetails;
       },
       error: (err) => { console.log(err) },
@@ -139,7 +140,6 @@ export class GKeepComponent {
     this.Api.getTasks().subscribe({
       next: (res) => {
         this.taskData = res;
-
       }
     })
   }
@@ -150,7 +150,9 @@ export class GKeepComponent {
     this.Api.getTasks().subscribe({
       next: (res) => {
         this.itemsData = res;
-
+      },
+      error:()=>{
+        this.toastr.error('error');
       }
     })
   }
@@ -168,7 +170,6 @@ export class GKeepComponent {
 
   fetchItem(tasks: any) {
     this.taskDetails = tasks;
-
     // for add and change button name
     this.taskChangeBtn = true;
   }
@@ -180,6 +181,7 @@ export class GKeepComponent {
       next: (res) => {
         this.updateItemMethod();
         this.getMethods();
+        this.getItems();
         this.taskChangeBtn = false;
       },
       error: (err) => { console.log('found error') },
@@ -193,6 +195,7 @@ export class GKeepComponent {
     this.taskDetails.tasks.forEach(element => {
       this.Api.updateItems(this.taskDetails.id, element).subscribe({
         next: (res) => {
+          this.getMethods();
           this.getItems();
           this.taskChangeBtn = false;
         },
@@ -208,9 +211,9 @@ export class GKeepComponent {
     this.Api.deleteTask(item).subscribe({
       next: (res) => {
         this.getMethods();
+        this.toastr.success('Task Delete Successfull'); 
       },
       error: (err) => { this.toastr.success('Data Deleted'); },
-      complete: () => { this.toastr.success('Task Delete Successfull'); }
     })
   }
 
@@ -219,11 +222,15 @@ export class GKeepComponent {
   deleteItems(TodoId, task: any) {
     this.Api.deleteItems(TodoId, task).subscribe({
       next: (res) => {
-        this.getItems();
+        this.getMethods();
+        this.toastr.success('Task Delete Successfull');
       },
       error: (err) => { this.toastr.success('Found Problem To Delete Time'); },
-      complete: () => { this.toastr.success('Task Delete Successfull'); }
     })
+    
+    setTimeout(() => {
+     
+    }, 500);
   }
 
   // close method

@@ -68,5 +68,5 @@ export class Lists {
   id:number;
   todoId:number;
   name?: string;
-  iscompleted: boolean = false;
+  isCompleted: boolean = false;
 }
