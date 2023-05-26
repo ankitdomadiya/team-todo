@@ -26,6 +26,10 @@ export class GKeepComponent {
   getlistArray: any;
   tasks: any;
 
+  // button on of
+
+  addOneItemBtnToogle = true;
+
   // button hinde 
 
   showInputField: boolean = false;
@@ -45,11 +49,25 @@ export class GKeepComponent {
   // button add and hide method 
 
   toggleInputField(item) {
-    if(!this.showInputField){
+    if (!this.showInputField) {
       item.isInput = true;
     }
     // this.showInputField = !this.showInputField;
   }
+
+  // Button On Off Method
+
+  buttonAnimation(item) {
+    if (this.addOneItemBtnToogle) {
+      item.isInput = true;
+      this.addOneItemBtnToogle = false;
+    }
+    else {
+      item.isInput = false;
+      this.addOneItemBtnToogle = true;
+    }
+  }
+
 
   // duplicate removel 
 
@@ -102,7 +120,7 @@ export class GKeepComponent {
     let oneData = this.singleItems;
     console.log(oneData);
 
-    this.Api.addItems(TodoId,oneData).subscribe({
+    this.Api.addItems(TodoId, oneData).subscribe({
       next: (res) => {
         console.log(res);
         this.getMethods();
