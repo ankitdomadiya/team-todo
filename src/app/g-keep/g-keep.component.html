@@ -1,5 +1,4 @@
 <!-- search box  -->
-
 <nav class="navbar">
     <div class="container-fluid">
         <img src="assets/logo.png" alt="logo" class="navbar-logo">
@@ -11,7 +10,6 @@
 </nav>
 
 <!-- value adding section  -->
-
 <div class="container mb-5">
     <div class="row">
         <div class="col-12">
@@ -48,8 +46,6 @@
                         aria-controls="collapseExample">submit</div>
                     <div class="btn btn-primary" (click)="updateMethod()" *ngIf="taskChangeBtn"
                         data-bs-toggle="collapse" href="#collapseExample" aria-controls="collapseExample">Edit</div>
-                    <!-- <div class="btn btn-primary" (click)="updateItemMethod()" *ngIf="taskChangeBtn"
-                        data-bs-toggle="collapse" href="#collapseExample" aria-controls="collapseExample">New Edit</div> -->
                 </div>
             </section>
         </div>
@@ -57,44 +53,33 @@
 </div>
 
 <!-- all values  -->
-
 <section class="container mt-5">
     <div class="row">
         <ng-container *ngFor="let item of taskData let i = index;">
             <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-5 overflow-auto">
                 <div class="card" style="max-width: 18rem; max-height: 18rem;">
                     <div class="card-header d-flex justify-content-between heding-shadow">
-                        <!-- <p>{{i+1}}</p> -->
-                        <!-- <p>{{i}}</p> -->
                         <p>{{item.id}}</p>
                         <div>
                             <i class="btn btn-transparent text-success fa fa-paint-brush" data-bs-toggle="collapse"
                                 href="#collapseExample" (click)="fetchTask(item)"></i>
-                            <i class="btn btn-transparent text-danger fa fa-trash"
-                                (click)="deleteTask(item.id)"></i>
+                            <i class="btn btn-transparent text-danger fa fa-trash" (click)="deleteTask(item.id)"></i>
                         </div>
                     </div>
                     <div class="card-body text-shadow">
                         <h5 class="card-title">{{item.name}}</h5>
-
-
                         <!-- button hide and show -->
-
                         <i class="fa fa-plus" (click)="buttonAnimation(item)"></i>
                         <span class="ms-3 " *ngIf="item.isInput">
-                            <input  type="checkbox" name="checkbox"
-                                [(ngModel)]="singleItems.isCompleted">
-                            <input  [(ngModel)]="singleItems.name" class="addbutton w-75 ms-2 mb-1"
+                            <input type="checkbox" name="checkbox" [(ngModel)]="singleItems.isCompleted">
+                            <input [(ngModel)]="singleItems.name" class="addbutton w-75 ms-2 mb-1"
                                 (keyup.enter)="addItems(item.id)" type="text">
                         </span>
-
-
                         <ol style="list-style-type: none">
                             <ng-container *ngFor="let initems of item.tasks">
                                 <li>
-                                    <i class="text-primary fa fa-paint-brush"
-                                        data-bs-toggle="collapse" href="#collapseExample" type="submit"
-                                        (click)="fetchItem(item)"></i>
+                                    <i class="text-primary fa fa-paint-brush" data-bs-toggle="collapse"
+                                        href="#collapseExample" type="submit" (click)="fetchItem(item)"></i>
                                     <input type="button" class="fs-5 text-danger me-2 size"
                                         (click)="deleteItems(item.id,initems.id)" value="x">
                                     <input type="checkbox" class="me-2" name="" id="" disabled
