@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { Lists, TaskDetails, TasksService } from '../api/tasks.service';
+import { Todo, TaskDetails, TasksService } from '../api/tasks.service';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-g-keep',
@@ -9,41 +10,41 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class GKeepComponent {
 
-  taskData: Array<TaskDetails> = new Array<TaskDetails>();
+  mainTaskData: Array<TaskDetails> = new Array<TaskDetails>();
   // items data
-  itemsData: Array<TaskDetails> = new Array<TaskDetails>();
+  todoData: Array<TaskDetails> = new Array<TaskDetails>();
   taskDetails?: TaskDetails;
-  itemDetails?: Lists;
-  singleItems?: Lists;
+  itemDetails?: Todo;
+  taskInnerItem?: Todo;
   taskChangeBtn: boolean = false;
   searchValue: string;
-  isDuplicate: boolean = false;
-  updateTask: boolean = false;
-  updateAddBtn: boolean = false;
-  fillBtn: boolean;
-  getlistArray: any;
-  tasks: any;
+  isDuplicateRemove: boolean = false;
+  updateMainTask: boolean = false;
+  // tasks: any;
   // button on of
   addOneItemBtnToogle = true;
   // button hinde 
   showInputField: boolean = false;
 
-
   constructor(private Api: TasksService, private toastr: ToastrService) { }
+
+  isLoading: Subject<boolean> = this.Api.isLoading;
 
   ngOnInit(): void {
     this.taskDetails = new TaskDetails;
-    this.singleItems = new Lists;
-    this.taskDetails.tasks = new Array<Lists>();
-    this.addRow();
-    this.getMethods();
+    this.taskInnerItem = new Todo;
+    this.taskDetails.tasks = new Array<Todo>();
+    this.addRowTaskAddTime();
+    this.getMainTask();
   }
+
   // button add and hide method 
   toggleInputField(item) {
     if (!this.showInputField) {
       item.isInput = true;
     }
   }
+
   // Button On Off Method
   buttonAnimation(item) {
     if (this.addOneItemBtnToogle) {
@@ -55,33 +56,44 @@ export class GKeepComponent {
       this.addOneItemBtnToogle = true;
     }
   }
+
+  /**
+   * this is use for remove diplicate vale and not allow duplicate value
+   * @param duplicateRemove
+   * 
+   */
   // duplicate removel 
   duplicateRemove() {
-    if (this.taskData.length > 0) {
-      for (let item of this.taskData) {
+    if (this.mainTaskData.length > 0) {
+      for (let item of this.mainTaskData) {
         if (item.name == this.taskDetails.name) {
-          this.isDuplicate = false;
+          this.isDuplicateRemove = false;
         }
         else {
-          this.isDuplicate = true;
+          this.isDuplicateRemove = true;
         }
       }
     }
     else {
-      this.isDuplicate = true;
+      this.isDuplicateRemove = true;
     }
   }
+
+  /**
+   * use for add title in todo
+   * @param addAllDetails
+   */
   // Add Tasks 
-  addDetails() {
+  addAllDetails() {
     this.duplicateRemove();
-    if (this.isDuplicate) {
+    if (this.isDuplicateRemove) {
       if (this.taskDetails.name) {
-        this.Api.addTasks(this.taskDetails).subscribe({
+        this.Api.addMainTask(this.taskDetails).subscribe({
           next: (res) => {
             console.log(res);
-            this.getMethods();
+            this.getMainTask();
             this.taskDetails = new TaskDetails;
-            this.addRow();
+            this.addRowTaskAddTime();
           },
           error: (err) => { console.log(err) },
           complete: () => { this.toastr.success('Task Add Successfull'); },
@@ -95,60 +107,89 @@ export class GKeepComponent {
       this.toastr.warning("Can't Add Duplicate Value")
     }
   }
-  addItems(TodoId) {
-    this.singleItems.todoId = TodoId;
-    let oneData = this.singleItems;
+
+  /**
+   * 
+   * use for add items in todo 
+   * @param addInnerItem
+   */
+  addInnerItem(TodoId) {
+    this.taskInnerItem.todoId = TodoId;
+    let oneData = this.taskInnerItem;
     console.log(oneData);
-    this.Api.addItems(TodoId, oneData).subscribe({
+    this.Api.addInnerItem(TodoId, oneData).subscribe({
       next: (res) => {
         console.log(res);
-        this.getMethods();
-        this.singleItems = new Lists;
+        this.getMainTask();
+        this.taskInnerItem = new Todo;
         this.taskDetails = new TaskDetails;
       },
       error: (err) => { console.log(err) },
       complete: () => { this.toastr.success('Task Add Successfull'); },
     })
   }
+
+  /**
+   * use for get title in todo
+   * @param getMainTask
+   */
   // Get Tasks
-  getMethods() {
+  getMainTask() {
+    this.Api.loaderShow();
     this.Api.getTasks().subscribe({
       next: (res) => {
-        this.taskData = res;
+        this.mainTaskData = res;
+      },
+      error:(err)=>{
+        this.Api.loaderShow();
+      },
+      complete:()=>{
+        this.Api.loaderHide();
       }
     })
   }
+
+  /**
+   * use for get Items in  todo
+   */
   // get items
   getItems() {
     this.Api.getTasks().subscribe({
       next: (res) => {
-        this.itemsData = res;
+        this.todoData = res;
       },
       error: () => {
         this.toastr.error('error');
       }
     })
   }
+
   // Fetch Task
-  fetchTask(item: any) {
+  fillTaskEditMode(item: any) {
     this.taskDetails = item;
 
     // for add and change button name
     this.taskChangeBtn = true;
   }
+
   // Fetch items
-  fetchItem(tasks: any) {
+  fillItemEditMode(tasks: any) {
     this.taskDetails = tasks;
 
     // for add and change button name
     this.taskChangeBtn = true;
   }
+
+  /**
+   * use for update title
+   * @param updateMainTaskDetail
+   */
   // Update Tasks
-  updateMethod() {
-    this.Api.updateTask(this.taskDetails).subscribe({
+  updateMainTaskDetail() {
+    this.Api.updateMainTask(this.taskDetails).subscribe({
       next: (res) => {
         this.updateItemMethod();
-        this.getMethods();
+        this.getMainTask();
         this.getItems();
         this.taskChangeBtn = false;
         this.toastr.success('Task Update Successfull');
@@ -156,12 +197,17 @@ export class GKeepComponent {
       error: (err) => { console.log('found error') },
     })
   }
+
+  /**
+   * use for update item
+   * @param updateItemMethod
+   */
   // update Items
   updateItemMethod() {
     this.taskDetails.tasks.forEach(element => {
-      this.Api.updateItems(this.taskDetails.id, element).subscribe({
+      this.Api.updateInnerItem(this.taskDetails.id, element).subscribe({
         next: (res) => {
-          this.getMethods();
+          this.getMainTask();
           this.getItems();
           this.taskChangeBtn = false;
         },
@@ -169,21 +215,31 @@ export class GKeepComponent {
       });
     });
   }
+
+  /**
+   * use for delete full todo
+   * @param deleteTask 
+   */
   // Delete Tasks
   deleteTask(item: any) {
     this.Api.deleteTask(item).subscribe({
       next: (res) => {
-        this.getMethods();
+        this.getMainTask();
         this.toastr.error('Data Delete Successfull');
       },
       error: (err) => { this.toastr.success('Data Deleted'); },
     })
   }
+
+  /**
+ * This method is use for delete items in todo
+ * @param deleteItems
+ */
   // delete items
   deleteItems(TodoId, task: any) {
     this.Api.deleteItems(TodoId, task).subscribe({
       next: (res) => {
-        this.getMethods();
+        this.getMainTask();
         this.toastr.error('Task Delete Successfull');
       },
       error: (err) => { this.toastr.success('Found Problem To Delete Time'); },
@@ -191,38 +247,56 @@ export class GKeepComponent {
     setTimeout(() => {
     }, 500);
   }
+
   // close method
   close() {
     this.taskChangeBtn = false;
-    this.updateTask = false;
+    this.updateMainTask = false;
     this.taskDetails = new TaskDetails();
-    this.addRow();
+    this.addRowTaskAddTime();
   }
+
+  /**
+   * use for add row whenever we want to add task in to to start level
+   * @param addRowTaskAddTime
+   */
   // Add Row
-  addRow() {
-    this.taskDetails.tasks.push(new Lists);
+  addRowTaskAddTime() {
+    this.taskDetails.tasks.push(new Todo);
   }
+
+  /**
+   * 
+   * @param index use for delete row whenever we add task first time
+   * @param deleteRow
+   */
   // Delete Row
   deleteRow(index: any) {
     if (this.taskDetails.tasks.length != 1) {
       this.taskDetails.tasks.splice(index, 1);
     }
   }
+
+  /**
+   * search method are use for search todos and items both 
+   * @param search
+   */
   // search method
   search() {
     if (this.searchValue) {
       let searchEmployee = new Array<TaskDetails>();
-      if (this.taskData.length > 0) {
-        for (let emp of this.taskData) {
+      if (this.mainTaskData.length > 0) {
+        for (let emp of this.mainTaskData) {
           if (JSON.stringify(emp).toLowerCase().indexOf(this.searchValue.toLowerCase()) > 0) {
             searchEmployee.push(emp);
           }
         }
-        this.taskData = searchEmployee;
+        this.mainTaskData = searchEmployee;
       }
     }
     else {
-      this.getMethods();
+      this.getMainTask();
     }
   }
 }
+

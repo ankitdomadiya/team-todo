@@ -1,3 +1,4 @@
+
 .navbar-logo {
     height: 70px;
 }
@@ -48,6 +49,29 @@
     border: none;
     background-color: white;
 }
+.overflow-auto {
+    overflow: none !important;
+}
+
+/*---------- for Loader css -----------*/
+.overlay {
+    position: fixed;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(74, 74, 74, .8);
+    z-index: 99999;
+  }
+  
+  .spinner {
+    position: absolute;
+    top: 0;
+    display: block;
+    width: 100%;
+    z-index: 99999;
+  }
 
 @media screen and (max-width: 768px) {
     .navbar-logo {

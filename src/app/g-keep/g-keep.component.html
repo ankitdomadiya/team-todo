@@ -1,3 +1,7 @@
+<div *ngIf="isLoading | async" class="overlay">
+    <mat-progress-bar mode="indeterminate" class="spinner" color="accent"></mat-progress-bar>
+</div>
+
 <!-- search box  -->
 <nav class="navbar">
     <div class="container-fluid">
@@ -28,7 +32,7 @@
                                     [(ngModel)]="taskDetails.name  " placeholder="Title">
                             </li>
                             <li class="list-group-item overflow-auto" style="height: 200px;">
-                                <ul *ngFor="let tasks of taskDetails.tasks; let i = index;" (keyup.enter)="addRow()"
+                                <ul *ngFor="let tasks of taskDetails.tasks; let i = index;" (keyup.enter)="addRowTaskAddTime()"
                                     class=" list-group-flush ">
                                     <li class="list-group-item ">
                                         <i class="fa fa-trash me-2" (click)="deleteRow(i)"></i>
@@ -37,14 +41,14 @@
                                             placeholder="List item">
                                     </li>
                                 </ul>
-                            <li class="list-group-item" (click)="addRow()"><i class="fa fa-plus"></i></li>
+                            <li class="list-group-item" (click)="addRowTaskAddTime()"><i class="fa fa-plus"></i></li>
                             <li class="list-group-item"></li>
                         </ul>
                     </div>
-                    <div class="btn btn-primary d-flex justify-content-center" (click)="addDetails()"
+                    <div class="btn btn-primary d-flex justify-content-center" (click)="addAllDetails()"
                         *ngIf="!taskChangeBtn" data-bs-toggle="collapse" href="#collapseExample"
                         aria-controls="collapseExample">submit</div>
-                    <div class="btn btn-primary" (click)="updateMethod()" *ngIf="taskChangeBtn"
+                    <div class="btn btn-primary" (click)="updateMainTaskDetail()" *ngIf="taskChangeBtn"
                         data-bs-toggle="collapse" href="#collapseExample" aria-controls="collapseExample">Edit</div>
                 </div>
             </section>
@@ -55,31 +59,31 @@
 <!-- all values  -->
 <section class="container mt-5">
     <div class="row">
-        <ng-container *ngFor="let item of taskData let i = index;">
-            <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-5 overflow-auto">
+        <ng-container *ngFor="let item of mainTaskData let i = index;">
+            <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-5 " >
                 <div class="card" style="max-width: 18rem; max-height: 18rem;">
                     <div class="card-header d-flex justify-content-between heding-shadow">
                         <p>{{item.id}}</p>
                         <div>
                             <i class="btn btn-transparent text-success fa fa-paint-brush" data-bs-toggle="collapse"
-                                href="#collapseExample" (click)="fetchTask(item)"></i>
+                                href="#collapseExample" (click)="fillTaskEditMode(item)"></i>
                             <i class="btn btn-transparent text-danger fa fa-trash" (click)="deleteTask(item.id)"></i>
                         </div>
                     </div>
                     <div class="card-body text-shadow">
-                        <h5 class="card-title">{{item.name}}</h5>
+                        <h1 class="card-title">{{item.name}}</h1>
                         <!-- button hide and show -->
                         <i class="fa fa-plus" (click)="buttonAnimation(item)"></i>
                         <span class="ms-3 " *ngIf="item.isInput">
-                            <input type="checkbox" name="checkbox" [(ngModel)]="singleItems.isCompleted">
-                            <input [(ngModel)]="singleItems.name" class="addbutton w-75 ms-2 mb-1"
-                                (keyup.enter)="addItems(item.id)" type="text">
+                            <input type="checkbox" name="checkbox" [(ngModel)]="taskInnerItem.isCompleted">
+                            <input [(ngModel)]="taskInnerItem.name" class="addbutton w-75 ms-2 mb-1"
+                                (keyup.enter)="addInnerItem(item.id)" type="text">
                         </span>
-                        <ol style="list-style-type: none">
+                        <ol style="list-style-type: none; overflow: auto; height: 200px;">
                             <ng-container *ngFor="let initems of item.tasks">
                                 <li>
                                     <i class="text-primary fa fa-paint-brush" data-bs-toggle="collapse"
-                                        href="#collapseExample" type="submit" (click)="fetchItem(item)"></i>
+                                        href="#collapseExample" type="submit" (click)="fillItemEditMode(item)"></i>
                                     <input type="button" class="fs-5 text-danger me-2 size"
                                         (click)="deleteItems(item.id,initems.id)" value="x">
                                     <input type="checkbox" class="me-2" name="" id="" disabled
