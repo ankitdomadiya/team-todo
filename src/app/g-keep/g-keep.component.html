@@ -1,17 +1,28 @@
+<!-- progressbar -->
 <div *ngIf="isLoading | async" class="overlay">
     <mat-progress-bar mode="indeterminate" class="spinner" color="accent"></mat-progress-bar>
+    <h1 class="loader">don't refresh window your task is running</h1>
 </div>
 
+
+<!-- nav bat -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="navbar-collapse">
+            <h1 class="navbar-nav ">Todo-List</h1>
+        </div>
+    </nav>
+
+
 <!-- search box  -->
-<nav class="navbar">
+<!-- <nav class="">
     <div class="container-fluid">
         <img src="assets/logo.png" alt="logo" class="navbar-logo">
-        <form>
-            <input class="form-control" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="searchValue"
-                name="search" (keyup)="search()" autocomplete="off">
-        </form>
     </div>
-</nav>
+</nav> -->
+<form class="mx-auto w-25 mt-4 mb-4">
+    <input class="form-control" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="searchValue"
+        name="search" (keyup)="search()" autocomplete="off">
+</form>
 
 <!-- value adding section  -->
 <div class="container mb-5">
@@ -32,8 +43,8 @@
                                     [(ngModel)]="taskDetails.name  " placeholder="Title">
                             </li>
                             <li class="list-group-item overflow-auto" style="height: 200px;">
-                                <ul *ngFor="let tasks of taskDetails.tasks; let i = index;" (keyup.enter)="addRowTaskAddTime()"
-                                    class=" list-group-flush ">
+                                <ul *ngFor="let tasks of taskDetails.tasks; let i = index;"
+                                    (keyup.enter)="addRowTaskAddTime()" class=" list-group-flush ">
                                     <li class="list-group-item ">
                                         <i class="fa fa-trash me-2" (click)="deleteRow(i)"></i>
                                         <input type="checkbox" [(ngModel)]="tasks.isCompleted" name="" id="">
@@ -60,18 +71,18 @@
 <section class="container mt-5">
     <div class="row">
         <ng-container *ngFor="let item of mainTaskData let i = index;">
-            <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-5 " >
+            <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-5 ">
                 <div class="card" style="max-width: 18rem; max-height: 18rem;">
                     <div class="card-header d-flex justify-content-between heding-shadow">
-                        <p>{{item.id}}</p>
-                        <div>
-                            <i class="btn btn-transparent text-success fa fa-paint-brush" data-bs-toggle="collapse"
+                        <h1>{{item.name}}</h1>
+                        <div class="hiden-icon">
+                            <i class="text-success fa fa-paint-brush me-2" data-bs-toggle="collapse"
                                 href="#collapseExample" (click)="fillTaskEditMode(item)"></i>
-                            <i class="btn btn-transparent text-danger fa fa-trash" (click)="deleteTask(item.id)"></i>
+                            <i class="text-danger fa fa-trash" (click)="deleteTask(item.id)"></i>
                         </div>
                     </div>
                     <div class="card-body text-shadow">
-                        <h1 class="card-title">{{item.name}}</h1>
+                        <!-- <h1 class="card-title">{{item.name}}</h1> -->
                         <!-- button hide and show -->
                         <i class="fa fa-plus" (click)="buttonAnimation(item)"></i>
                         <span class="ms-3 " *ngIf="item.isInput">
@@ -79,7 +90,7 @@
                             <input [(ngModel)]="taskInnerItem.name" class="addbutton w-75 ms-2 mb-1"
                                 (keyup.enter)="addInnerItem(item.id)" type="text">
                         </span>
-                        <ol style="list-style-type: none; overflow: auto; height: 200px;">
+                        <ol style="list-style-type: none; overflow: auto; height: 100px;">
                             <ng-container *ngFor="let initems of item.tasks">
                                 <li>
                                     <i class="text-primary fa fa-paint-brush" data-bs-toggle="collapse"

@@ -1,4 +1,3 @@
-
 .navbar-logo {
     height: 70px;
 }
@@ -17,6 +16,10 @@
 
 .card {
     border: none;
+}
+
+.loader {
+    text-align: center;
 }
 
 .heding-shadow {
@@ -49,6 +52,7 @@
     border: none;
     background-color: white;
 }
+
 .overflow-auto {
     overflow: none !important;
 }
@@ -61,17 +65,48 @@
     height: 100%;
     top: 0;
     left: 0;
-    background-color: rgba(74, 74, 74, .8);
+    background-color: rgba(74, 74, 74, 0.418);
     z-index: 99999;
-  }
-  
-  .spinner {
+}
+
+.spinner {
     position: absolute;
     top: 0;
     display: block;
     width: 100%;
     z-index: 99999;
-  }
+}
+
+
+
+
+
+
+
+.navbar {
+    background-color: #526D82;
+    color: #fff;
+    height: 50px;
+}
+
+.navbar-nav {
+    margin: 0 auto;
+}
+
+.hiden-icon{
+    display: none!important;
+}
+
+.card-header:hover .hiden-icon{
+    display: block!important;
+    cursor: pointer;
+}
+
+
+
+
+
+
 
 @media screen and (max-width: 768px) {
     .navbar-logo {

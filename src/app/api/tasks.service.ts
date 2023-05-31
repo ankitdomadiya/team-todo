@@ -4,7 +4,7 @@ import { enviroment } from 'src/environment/config';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TasksService {
   httpHeaders: HttpHeaders | { [header: string]: string | string[]; };
@@ -31,7 +31,7 @@ export class TasksService {
   }
 
   addInnerItem(TodoId,body: Todo) {
-    return this.http.post(`http://10.10.4.3:16100/Todo/${TodoId}/task`, body);
+    return this.http.post(`http://10.10.5.40:16100/Todo/${TodoId}/task`, body);
   }
 
   // get api
@@ -48,7 +48,7 @@ export class TasksService {
 
   // updateitems
   updateInnerItem(TodoId,body: any) {
-    return this.http.put(`http://10.10.4.3:16100/Todo/${TodoId}/task/${body.id}`, body);
+    return this.http.put(`http://10.10.5.40:16100/Todo/${TodoId}/task/${body.id}`, body);
   }
 
   // use for delete tasks
@@ -58,7 +58,7 @@ export class TasksService {
 
   // delete items
   deleteItems(TodoId,id: any) {
-    return this.http.delete (`http://10.10.4.3:16100/todo/${TodoId}/task/${id}`);
+    return this.http.delete (`http://10.10.5.40:16100/todo/${TodoId}/task/${id}`);
   }
 }
 

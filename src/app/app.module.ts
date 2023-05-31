@@ -9,8 +9,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +24,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     MatProgressBarModule
   ],
   providers: [
-    HttpClient
+    HttpClient,
   ],
   bootstrap: [AppComponent]
 })

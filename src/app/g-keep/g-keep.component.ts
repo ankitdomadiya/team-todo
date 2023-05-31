@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
   templateUrl: './g-keep.component.html',
   styleUrls: ['./g-keep.component.scss']
 })
+
 export class GKeepComponent {
 
   mainTaskData: Array<TaskDetails> = new Array<TaskDetails>();
