@@ -1,17 +1,16 @@
 <!-- progressbar -->
-<div *ngIf="isLoading | async" class="overlay">
+<!-- <div *ngIf="isLoading | async" class="overlay">
     <mat-progress-bar mode="indeterminate" class="spinner" color="accent"></mat-progress-bar>
     <h1 class="loader">don't refresh window your task is running</h1>
-</div>
+</div> -->
 
+<!-- nav bar -->
 
-<!-- nav bat -->
-    <nav class="navbar navbar-expand-lg">
-        <div class="navbar-collapse">
-            <h1 class="navbar-nav ">Todo-List</h1>
-        </div>
-    </nav>
-
+<nav class="navbar navbar-expand-lg">
+    <div class="navbar-collapse">
+        <h1 class="navbar-nav ">Todo-List</h1>
+    </div>
+</nav>
 
 <!-- search box  -->
 <!-- <nav class="">
@@ -20,8 +19,13 @@
     </div>
 </nav> -->
 <form class="mx-auto w-25 mt-4 mb-4">
-    <input class="form-control" type="search" placeholder="Search" aria-label="Search" [(ngModel)]="searchValue"
-        name="search" (keyup)="search()" autocomplete="off">
+
+
+    <div class="search-box">
+        <button class="btn-search"><i class="fas fa-search"></i></button>
+        <input type="text" class="input-search" placeholder="Search Task..." aria-label="Search"
+            [(ngModel)]="searchValue" name="search" (keyup)="search()" autocomplete="off">
+    </div>
 </form>
 
 <!-- value adding section  -->
@@ -42,25 +46,14 @@
                                 <input type="text" class="form-control mb-1 itemTitle" id="floatingInput" name="title"
                                     [(ngModel)]="taskDetails.name  " placeholder="Title">
                             </li>
-                            <li class="list-group-item overflow-auto" style="height: 200px;">
-                                <ul *ngFor="let tasks of taskDetails.tasks; let i = index;"
-                                    (keyup.enter)="addRowTaskAddTime()" class=" list-group-flush ">
-                                    <li class="list-group-item ">
-                                        <i class="fa fa-trash me-2" (click)="deleteRow(i)"></i>
-                                        <input type="checkbox" [(ngModel)]="tasks.isCompleted" name="" id="">
-                                        <input type="text" [(ngModel)]="tasks.name" class="addbutton w-75 ms-3"
-                                            placeholder="List item">
-                                    </li>
-                                </ul>
-                            <li class="list-group-item" (click)="addRowTaskAddTime()"><i class="fa fa-plus"></i></li>
                             <li class="list-group-item"></li>
                         </ul>
                     </div>
                     <div class="btn btn-primary d-flex justify-content-center" (click)="addAllDetails()"
-                        *ngIf="!taskChangeBtn" data-bs-toggle="collapse" href="#collapseExample"
+                        *ngIf="!isTaskChangeBtn" data-bs-toggle="collapse" href="#collapseExample"
                         aria-controls="collapseExample">submit</div>
-                    <div class="btn btn-primary" (click)="updateMainTaskDetail()" *ngIf="taskChangeBtn"
-                        data-bs-toggle="collapse" href="#collapseExample" aria-controls="collapseExample">Edit</div>
+                    <!-- <div class="btn btn-primary" (click)="updateMainTaskDetail()" *ngIf="isTaskChangeBtn"
+                        data-bs-toggle="collapse" href="#collapseExample" aria-controls="collapseExample">Edit</div> -->
                 </div>
             </section>
         </div>
@@ -72,48 +65,105 @@
     <div class="row">
         <ng-container *ngFor="let item of mainTaskData let i = index;">
             <div class="col-xxl-3 col-xl-3 col-lg-3 col-md-4 col-sm-6 col-12 mb-5 ">
-                <div class="card" style="max-width: 18rem; max-height: 18rem;">
-                    <div class="card-header d-flex justify-content-between heding-shadow">
-                        <h1>{{item.name}}</h1>
-                        <div class="hiden-icon">
-                            <i class="text-success fa fa-paint-brush me-2" data-bs-toggle="collapse"
-                                href="#collapseExample" (click)="fillTaskEditMode(item)"></i>
-                            <i class="text-danger fa fa-trash" (click)="deleteTask(item.id)"></i>
+                <div class="card" style="max-width: 25rem; max-height: 18rem;">
+                    <div class="card-header ">
+                        <!-- <h2 class="mb-0">{{item.name}}</h2> -->
+                        <div class="">
+                            <input type="text" *ngIf="!item.isTodoInput" [value]="item.name"
+                                [disabled]="!item.isTodoInput">
+                            <input type="text" *ngIf="item.isTodoInput" [value]="item.name" [(ngModel)]="editTask.name">
+                        </div>
+
+                        <div *ngIf="item.isTodoInput">
+                            <!-- <i class="material-icons text-success fs-5 ms-2" (click)="updateMainTaskDetail()">save</i> -->
+                            <Button (click)="updateMainTaskDetail()">S</Button>
+                            <i class="material-icons text-danger fs-5 ms-1" type="submit" (click)="close()">close</i>
+                        </div>
+
+                        <div *ngIf="!item.isTodoInput" class="hiden-icon" >
+                            <i class="text-primary material-icons me-3" (click)="editTodo(item)">edit</i>
+                            <i class="text-danger material-icons" (click)="deleteTodo(item.id)">delete_forever</i>
                         </div>
                     </div>
-                    <div class="card-body text-shadow">
-                        <!-- <h1 class="card-title">{{item.name}}</h1> -->
+                    <div class="card-body">
                         <!-- button hide and show -->
                         <i class="fa fa-plus" (click)="buttonAnimation(item)"></i>
-                        <span class="ms-3 " *ngIf="item.isInput">
+                        <span class="ms-3" *ngIf="item.isInput">
                             <input type="checkbox" name="checkbox" [(ngModel)]="taskInnerItem.isCompleted">
-                            <input [(ngModel)]="taskInnerItem.name" class="addbutton w-75 ms-2 mb-1"
-                                (keyup.enter)="addInnerItem(item.id)" type="text">
+                            <input [(ngModel)]="taskInnerItem.name" class="addbutton ms-2 me-2" type="text">
+                            <i class="material-icons text-success" (click)="addInnerItem(item.id)"
+                                aria-hidden="true">save</i>
                         </span>
-                        <ol style="list-style-type: none; overflow: auto; height: 100px;">
+                        <ol style="list-style-type: none; overflow: auto; height: 170px; ">
                             <ng-container *ngFor="let initems of item.tasks">
-                                <li>
-                                    <i class="text-primary fa fa-paint-brush" data-bs-toggle="collapse"
-                                        href="#collapseExample" type="submit" (click)="fillItemEditMode(item)"></i>
-                                    <input type="button" class="fs-5 text-danger me-2 size"
-                                        (click)="deleteItems(item.id,initems.id)" value="x">
-                                    <input type="checkbox" class="me-2" name="" id="" disabled
-                                        [checked]="initems.isCompleted">
-                                    <label *ngIf="!initems.isCompleted">
+                                <li class="todo-li pt-2">
+                                    <div>
+                                        <input type="checkbox" class="me-2" [(ngModel)]="initems.isCompleted"
+                                            [checked]="initems.isCompleted" (change)="isTaskCompleted(item.id,initems)">
+                                        <input type="text" *ngIf="!initems.isTaskInput" [value]="initems.name"
+                                            [disabled]="!initems.isTaskInput">
+                                        <input type="text" *ngIf="initems.isTaskInput" [value]="initems.name"
+                                            [(ngModel)]="editTask.name">
+                                    </div>
+
+                                    <!-- <div >
+                                            <button type="submit" class="" *ngIf="initems.isTaskInput"
+                                        (click)="updateItemMethod(item.id,initems)">y</button>
+                                        </div> -->
+
+                                    <div *ngIf="initems.isTaskInput">
+                                        <i class="material-icons text-success fs-5 ms-2" type="submit"
+                                            (click)="updateItemMethod(item.id,initems)">save</i>
+                                        <!-- <button type="submit" (click)="updateItemMethod(item.id,initems)">y</button> -->
+                                        <i class="material-icons text-danger fs-5 ms-1" type="submit"
+                                            (click)="closeIn(initems)">close</i>
+                                    </div>
+
+                                    <div class="hover-to-show-action" *ngIf="!initems.isTaskInput">
+                                        <i class="text-primary material-icons fs-5 ms-2" type="submit"
+                                            (click)="editItem(initems)">edit</i>
+                                        <i type="button" class="material-icons text-danger fs-5 ms-1"
+                                            (click)="deleteItems(item.id,initems.id)">delete_forever</i>
+                                    </div>
+                                    <!-- <label *ngIf="!initems.isCompleted">
                                         {{initems.name}}
-                                    </label>
-                                    <label *ngIf="initems.isCompleted">
+                                    </label> -->
+                                    <!-- <label *ngIf="initems.isCompleted">
                                         <del>
                                             {{initems.name}}
                                         </del>
-                                    </label>
+                                    </label> -->
                                 </li>
                             </ng-container>
                         </ol>
-                        <p style="display: flex;">{{ item.addedon | date }}</p>
+                        <hr style="margin: 0;">
+                        <p style="display: flex; font-size: 11px; color: gray; padding: 0;">{{ item.addedon | date }}
+                        </p>
                     </div>
                 </div>
             </div>
         </ng-container>
     </div>
 </section>
+
+<!-- footer -->
+
+<footer>
+    <p>
+        Created with <i class="fa fa-heart"></i> by
+        <a target="_blank" href="https://ankitdomadiya.blogspot.com/">Ankit</a>
+        Follow me :
+        <a target="_blank" href="#"><i class="fab fa-instagram"></i></a>
+        <a target="_blank" href="#"><i class="fab fa-linkedin"></i></a>
+        <a target="_blank" href="#"><i class="fab fa-codepen"></i></a>
+        <a target="_blank" href="#"><i class="fab fa-dev"></i></a>
+        <a target="_blank" href="#"><i class="fab fa-twitter-square"></i></a>
+    </p>
+</footer>
+
+<div class="youtubeBtn">
+    <a target="_blank" href="https://ankitdomadiya.blogspot.com/">
+        <!-- <span>Watch on YouTube</span> -->
+        <i class="fas fa-blog"></i>
+    </a>
+</div>

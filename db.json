@@ -1,36 +1,21 @@
 {
   "tasks": [
     {
-      "ListItems": [
+      "addedon": "2023-06-01T07:53:52.911Z",
+      "tasks": [
         {
-          "checkbox": false,
-          "items": "Today's Task"
+          "isCompleted": false,
+          "name": "asdf"
         }
       ],
-      "title": "A.c Cleaning",
-      "id": 1
+      "name": "sadf",
+      "id": 3
     },
     {
-      "ListItems": [
-        {
-          "checkbox": false,
-          "items": "sdf"
-        },
-        {
-          "checkbox": true,
-          "items": "asdf"
-        },
-        {
-          "checkbox": true,
-          "items": "sadf"
-        },
-        {
-          "checkbox": false,
-          "items": "sadf"
-        }
-      ],
-      "title": "sadf",
-      "id": 2
+      "addedon": "2023-06-02T05:31:55.827Z",
+      "tasks": [],
+      "name": "asdf",
+      "id": 4
     }
   ]
 }

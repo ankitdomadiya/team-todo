@@ -31,7 +31,7 @@ export class TasksService {
   }
 
   addInnerItem(TodoId,body: Todo) {
-    return this.http.post(`http://10.10.5.40:16100/Todo/${TodoId}/task`, body);
+    return this.http.post(`${this.__taskUrl}/${TodoId}/task`, body);
   }
 
   // get api
@@ -48,7 +48,7 @@ export class TasksService {
 
   // updateitems
   updateInnerItem(TodoId,body: any) {
-    return this.http.put(`http://10.10.5.40:16100/Todo/${TodoId}/task/${body.id}`, body);
+    return this.http.put(`${this.__taskUrl}/${TodoId}/task/${body.id}`, body);
   }
 
   // use for delete tasks
@@ -58,22 +58,27 @@ export class TasksService {
 
   // delete items
   deleteItems(TodoId,id: any) {
-    return this.http.delete (`http://10.10.5.40:16100/todo/${TodoId}/task/${id}`);
+    return this.http.delete (`${this.__taskUrl}/${TodoId}/task/${id}`);
   }
 }
 
 export class TaskDetails {
-  id?: number;
-  name?: string;
+  id: number;
+  name: string;
   addedon:any = new Date();
-  tasks?: Array<Todo> = new Array<Todo>();
+  tasks: Array<Todo> = new Array<Todo>();
 
   // UI
   isInput:boolean = false;
+  isTodoInput: boolean;
 }
 export class Todo {
   id:number;
   todoId:number;
-  name?: string;
-  isCompleted: boolean = false;
+  name: string;
+  isCompleted: boolean ;
+
+  // Ui specifcy
+  isTaskInput: boolean;
+  
 }
