@@ -11,6 +11,8 @@ import { Subject } from 'rxjs';
 
 export class GKeepComponent {
 
+  
+
   mainTaskData: Array<TaskDetails> = new Array<TaskDetails>();
   // items data
   todoData: Array<TaskDetails> = new Array<TaskDetails>();
@@ -20,7 +22,7 @@ export class GKeepComponent {
   editTask: Todo;
 
   searchValue: string;
-
+  panelOpenState: boolean;
   isTaskChangeBtn: boolean = false;
   isDuplicateRemove: boolean = false;
   // tasks: any;
@@ -246,9 +248,9 @@ export class GKeepComponent {
     this.Api.deleteTask(item).subscribe({
       next: (res) => {
         this.getMainTask();
-        this.toastr.error('Data Delete Successfull');
+        this.toastr.success('Data Delete Successfull');
       },
-      error: (err) => { this.toastr.success('Data Deleted'); },
+      error: (err) => { this.toastr.error('Found Problem To Todo Delete Time'); },
     })
   }
 
@@ -261,9 +263,9 @@ export class GKeepComponent {
     this.Api.deleteItems(TodoId, task).subscribe({
       next: (res) => {
         this.getMainTask();
-        this.toastr.error('Task Delete Successfull');
+        this.toastr.success('Task Delete Successfull');
       },
-      error: (err) => { this.toastr.success('Found Problem To Delete Time'); },
+      error: (err) => { this.toastr.error('Found Problem To Item Delete Time'); },
     })
     setTimeout(() => {
     }, 500);
@@ -279,6 +281,8 @@ export class GKeepComponent {
     this.isTaskChangeBtn = false;
     items.isTaskInput = false;
     this.taskDetails = new TaskDetails();
+
+    items.isTodoInput = false;
     // this.taskInnerItem = new Todo();
   }
 

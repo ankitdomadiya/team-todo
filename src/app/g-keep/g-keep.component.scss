@@ -1,60 +1,8 @@
-ol,
-ul {
-    padding: initial;
+::-webkit-scrollbar {
+    width: 0px;
 }
 
-.navbar-logo {
-    height: 70px;
-}
-
-.border-none {
-    border: none;
-}
-
-.task-note {
-    width: 25%;
-}
-
-.btn {
-    padding: 8px;
-}
-
-.card {
-    border: none;
-}
-
-.loader {
-    text-align: center;
-}
-
-// ########## Task Entering ############
-
-.task {
-    width: 40%;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
-}
-
-.taskbody {
-    width: 40%;
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
-}
-
-.addbutton {
-    border: none;
-    // box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-}
-
-.size {
-    border: none;
-    background-color: white;
-}
-
-.overflow-auto {
-    overflow: none !important;
-}
-
-/*---------- for Loader css -----------*/
+/*---------- Loader -----------*/
 .overlay {
     position: fixed;
     display: block;
@@ -65,7 +13,6 @@ ul {
     background-color: rgba(74, 74, 74, 0.418);
     z-index: 99999;
 }
-
 .spinner {
     position: absolute;
     top: 0;
@@ -73,38 +20,230 @@ ul {
     width: 100%;
     z-index: 99999;
 }
+/*------------- loader end --------------*/
 
-
-
-
-
-
-
+/*------------------------ navbar --------------------------*/
 .navbar {
     background-color: #42a5f5;
     color: #fff;
     height: 50px;
 }
-
 .navbar-nav {
     margin: 0 auto;
 }
+/*---------------------------- navbar end-----------------------*/
 
-.hiden-icon {
+/*------------------------ search bar -------------------*/
+* {
+    box-sizing: border-box;
+}
+.search-box {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+}
+.input-search {
+    height: 50px;
+    width: 50px;
+    border-style: none;
+    padding: 10px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    outline: none;
+    border-radius: 25px;
+    transition: all .5s ease-in-out;
+    background-color: #26c6da;
+    padding-right: 40px;
+    color: #FFFFFF;
+}
+.input-search::placeholder {
+    color: #FFFFFF;
+    font-size: 18px;
+    letter-spacing: 2px;
+    font-weight: 100;
+}
+.btn-search {
+    width: 50px;
+    height: 50px;
+    border-style: none;
+    font-size: 20px;
+    font-weight: bold;
+    outline: none;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    right: 0px;
+    color: #FFFFFF;
+    background-color: transparent;
+    pointer-events: painted;
+}
+.btn-search:focus~.input-search {
+    width: 300px;
+    border-radius: 0px;
+    background-color: transparent;
+    border-bottom: 1px solid #FFFFFF;
+    transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+}
+.input-search:focus {
+    width: 300px;
+    border-radius: 0px;
+    background-color: transparent;
+    border-bottom: 1px solid #A8B3C0;
+    transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
+}
+.cursor {
+    cursor: pointer;
+}
+/*--------------------------- search bar end -----------------------------*/
+
+/*-------------- add task ---------------*/
+.enterTodo{
+display: flex;
+justify-content: space-around;
+align-items: baseline;}
+/*------------------ end add task ------------------*/
+
+/*------------------------- tasks icon show and hide --------------------------------*/
+.show-action-btn {
     display: none !important;
 }
 
-.card-header:hover .hiden-icon {
-    display: block !important;
-    cursor: pointer;
+.list-item:hover .show-action-btn {
+    display: inline !important;
 }
+/*-------------------------- end tasks item show and hide --------------------------------*/
 
+/*---------------------------- footer --------------------------------------*/
+footer {
+    background-color: #222;
+    color: #fff;
+    font-size: 14px;
+    bottom: 0;
+    position: fixed;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 999;
+}
+footer p {
+    margin: 10px 0;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida  Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+footer .fa-heart {
+    color: red;
+}
+footer .fa-dev {
+    color: #fff;
+}
+footer .fa-twitter-square {
+    color: #1da0f1;
+}
+footer .fa-instagram {
+    color: #f0007c;
+}
+footer .fa-linkedin {
+    color: #0073b1;
+}
+footer .fa-codepen {
+    color: #fff
+}
+footer a {
+    color: #3c97bf;
+    text-decoration: none;
+    margin-right: 5px;
+}
+.youtubeBtn {
+    position: fixed;
+    left: 50%;
+    transform: translatex(-50%);
+    bottom: 45px;
+    cursor: pointer;
+    transition: all .3s;
+    vertical-align: middle;
+    text-align: center;
+    display: inline-block;
+}
+.youtubeBtn i {
+    font-size: 20px;
+    float: left;
+}
+.youtubeBtn a {
+    color: #cddc39;
+    animation: youtubeAnim 1000ms linear infinite;
+    float: right;
+}
+.youtubeBtn a:hover {
+    color: #afb42b;
+    transition: all .3s ease-in-out;
+    text-shadow: none;
+}
+.youtubeBtn i:active {
+    transform: scale(.9);
+    transition: all .3s ease-in-out;
+}
+.youtubeBtn span {
+    font-family: 'Lato';
+    font-weight: normal;
+    display: block;
+    font-size: 12px;
+    float: right;
+    line-height: 20px;
+    padding-left: 5px;
+}
+/*------------------------- footer end -------------------------------------*/
 
+/*---------------------------- tasks --------------------------------------*/
+.todo-header {
+    background-color: rgb(180 203 233);
+}
+.todo-name {
+    font-family: 'Castoro Titling', cursive;
+    font-family: 'IBM Plex Serif', serif;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+    color: black;
+}
+.singleListItemDate {
+    color: #ABABAB;
+    font-family: 'Castoro Titling', cursive;
+    font-family: 'IBM Plex Serif', serif;
+    font-family: 'K2D', sans-serif;
+    border: none;
+}
+.task-input {
+    font-family: 'Castoro Titling', cursive;
+    font-family: 'IBM Plex Serif', serif;
+    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
+}
+.taskEdit {
+    color: #289128;
+}
+.taskDelete {
+    color: #f44336;
+}
+.taskInput {
+    border: none;
+    outline: none;
+}
+.taskReturn {
+    color: #f44336;
+}
+.taskSave {
+    color: rgb(82, 172, 208);
+}
+/*------------------------------------------ tasks end -----------------------------------------*/
+@keyframes youtubeAnim {
 
+    0%,
+    100% {
+        color: orange;
+    }
 
-
-
-
+    50% {
+        color: #fc4f08;
+    }
+}
 @media screen and (max-width: 768px) {
     .navbar-logo {
         height: 50px;
@@ -174,220 +313,39 @@ ul {
 }
 
 
+// ---------------------------------------------------
 
 
 
-// search-bar css
+// ===================input Css
+// change label color, background & font when focus after change lable position
+::ng-deep .mat-mdc-form-field .mdc-text-field--outlined .mdc-notched-outline--upgraded .mdc-floating-label--float-above {
+    font-size: 16px;
+    // color: red;
+    top: 28px !important;
+    position: relative !important;
+    font-weight: 300 !important;
+    // background: rgb(255, 209, 123);
+  }
+  
+  // change mat-form-field height
+//   ::ng-deep .mat-mdc-text-field-wrapper {
+//     height: 35px !important;
+//   }
+  // Change Lable Font Position
+//   ::ng-deep .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
+//     top: 26px !important;
+//   }
+  
+  // change mat lable position
+//   ::ng-deep .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
+//     top: 15px !important;
+//     font-size: 15px;
+//   }
+  // change mat-form-field inside input with text
+//   ::ng-deep .mat-mdc-input-element {
+//     top: -10px !important;
+//     position: relative !important;
+//   }
+ 
 
-
-* {
-    box-sizing: border-box;
-}
-
-// body {
-//     margin: 0px;
-//     padding: 0px;
-//     width: 100vw;
-//     height: 100vh;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     background-color: #130f40;
-//     font-family: 'Lato' !important;
-// }
-
-.search-box {
-    width: fit-content;
-    height: fit-content;
-    position: relative;
-}
-
-.input-search {
-    height: 50px;
-    width: 50px;
-    border-style: none;
-    padding: 10px;
-    font-size: 18px;
-    letter-spacing: 2px;
-    outline: none;
-    border-radius: 25px;
-    transition: all .5s ease-in-out;
-    background-color: #26c6da;
-    padding-right: 40px;
-    color: #314354;
-}
-
-.input-search::placeholder {
-    color: #025464;
-    font-size: 18px;
-    letter-spacing: 2px;
-    font-weight: 100;
-}
-
-.btn-search {
-    width: 50px;
-    height: 50px;
-    border-style: none;
-    font-size: 20px;
-    font-weight: bold;
-    outline: none;
-    cursor: pointer;
-    border-radius: 50%;
-    position: absolute;
-    right: 0px;
-    color: #FFFFFF;
-    background-color: transparent;
-    pointer-events: painted;
-}
-
-.btn-search:focus~.input-search {
-    width: 300px;
-    border-radius: 0px;
-    background-color: transparent;
-    border-bottom: 1px solid #2A3A4C;
-    transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
-}
-
-.input-search:focus {
-    width: 300px;
-    border-radius: 0px;
-    background-color: transparent;
-    border-bottom: 1px solid #A8B3C0;
-    transition: all 500ms cubic-bezier(0, 0.110, 0.35, 2);
-}
-
-
-
-
-
-
-
-/*  footer   */
-footer {
-    background-color: #222;
-    color: #fff;
-    font-size: 14px;
-    bottom: 0;
-    position: fixed;
-    left: 0;
-    right: 0;
-    text-align: center;
-    z-index: 999;
-}
-
-footer p {
-    margin: 10px 0;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida  Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-}
-
-footer .fa-heart {
-    color: red;
-}
-
-footer .fa-dev {
-    color: #fff;
-}
-
-footer .fa-twitter-square {
-    color: #1da0f1;
-}
-
-footer .fa-instagram {
-    color: #f0007c;
-}
-
-fotter .fa-linkedin {
-    color: #0073b1;
-}
-
-footer .fa-codepen {
-    color: #fff
-}
-
-footer a {
-    color: #3c97bf;
-    text-decoration: none;
-    margin-right: 5px;
-}
-
-.youtubeBtn {
-    position: fixed;
-    left: 50%;
-    transform: translatex(-50%);
-    bottom: 45px;
-    cursor: pointer;
-    transition: all .3s;
-    vertical-align: middle;
-    text-align: center;
-    display: inline-block;
-}
-
-.youtubeBtn i {
-    font-size: 20px;
-    float: left;
-}
-
-.youtubeBtn a {
-    color: #cddc39;
-    animation: youtubeAnim 1000ms linear infinite;
-    float: right;
-}
-
-.youtubeBtn a:hover {
-    color: #afb42b;
-    transition: all .3s ease-in-out;
-    text-shadow: none;
-}
-
-.youtubeBtn i:active {
-    transform: scale(.9);
-    transition: all .3s ease-in-out;
-}
-
-.youtubeBtn span {
-    font-family: 'Lato';
-    font-weight: normal;
-    display: block;
-    font-size: 12px;
-    float: right;
-    line-height: 20px;
-    padding-left: 5px;
-
-}
-
-@keyframes youtubeAnim {
-    0%,
-    100% {
-        color: orange;
-    }
-
-    50% {
-        color: #fc4f08 ;
-    }
-}
-
-/* footer  */
-
-
-
-// class for inside icon
-
-.todo-li{
-    display: flex;
-    justify-content: space-between;
-}
-
-.hover-to-show-action{
-    display: none;
-}
-
-.todo-li:hover .hover-to-show-action{ 
-    display: block;
-}
-
-.card-header {
-    padding: 5px 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
